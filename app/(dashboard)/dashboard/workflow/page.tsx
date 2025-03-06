@@ -6,15 +6,15 @@ import Link from 'next/link';
 import { WorkflowHistoryDrawer } from '@/components/workflow/WorkflowHistoryDrawer';
 
 export default function Workflow() {
-    const [story, setStory] = useState('');
+    const [Investibot, setInvestibot] = useState('');
     const [result, setResult] = useState<any>(null);
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!story.trim()) {
-            setError('Please enter a story');
+        if (!Investibot.trim()) {
+            setError('Please enter a Company');
             return;
         }
         setError('');
@@ -27,7 +27,7 @@ export default function Workflow() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ story }),
+                body: JSON.stringify({ Investibot }),
             });
 
             const data = await response.json();
@@ -36,17 +36,17 @@ export default function Workflow() {
                 setResult(data);
                 setError('');
             } else {
-                setError(data.error || 'An error occurred while fetching the story.');
+                setError(data.error || 'An error occurred while fetching the results.');
             }
         } catch (err) {
-            setError('An error occurred while fetching the story.');
+            setError('An error occurred while fetching the results.');
         } finally {
             setLoading(false);
         }
     };
 
     const handleSelectHistory = (input: string, output: string) => {
-        setStory(input);
+        setInvestibot(input);
         try {
             // Assuming output is a JSON string or already a JSON object
             const outputData = typeof output === 'string' ? JSON.parse(output) : output;
@@ -63,7 +63,7 @@ export default function Workflow() {
                 <div className="text-center mb-8 p-8">
                     <h1 className="text-5xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 text-transparent bg-clip-text inline-block" 
                         style={{ lineHeight: '1.5', padding: '0.5em 0' }}>
-                        AI Story Generator - Workflow
+                        AI Investment - Workflow
                     </h1>
                 </div>
 
@@ -71,17 +71,17 @@ export default function Workflow() {
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div className="space-y-2">
                             <div className="flex justify-between items-center">
-                                <label htmlFor="story" className="block text-lg font-medium text-gray-700">
-                                    Enter your story prompt:
+                                <label htmlFor="Investibot" className="block text-lg font-medium text-gray-700">
+                                    Enter your company name:
                                 </label>
                                 <WorkflowHistoryDrawer onSelectHistory={handleSelectHistory} />
                             </div>
                             <input
-                                id="story"
+                                id="Investibot"
                                 type="text"
-                                value={story}
-                                onChange={(e) => setStory(e.target.value)}
-                                placeholder="E.g., Tell me a story about a magical forest..."
+                                value={Investibot}
+                                onChange={(e) => setInvestibot(e.target.value)}
+                                placeholder="E.g., Enter the name of the company to research"
                                 className="w-full p-4 rounded-lg bg-white/50 border border-purple-200 text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent shadow-inner"
                             />
                         </div>
@@ -99,7 +99,7 @@ export default function Workflow() {
                                     Generating...
                                 </span>
                             ) : (
-                                'Generate Story'
+                                'Generate Investibot'
                             )}
                         </button>
                     </form>
